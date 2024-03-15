@@ -1,0 +1,20 @@
+name: quran
+description: Quran text, translation, audio URLs, and details of pages, juz, surah, ayah, place of revelation etc.
+version: 1.2.2
+homepage: https://github.com/aqeelshamz/quran
+
+environment:
+  sdk: ">=3.1.5 <4.0.0"
+  flutter: ">=3.13.9"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_lints:
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  test:
+
+flutter:

@@ -1,0 +1,103 @@
+name: zad_app
+description: Zad The Dawa App.
+publish_to: none
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.3.1 <4.0.0"
+  flutter: ">=3.19.3 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # state
+  hooks_riverpod: ^2.5.1
+  flutter_hooks: ^0.20.5
+
+  # look and feel
+  cupertino_icons: ^1.0.6
+  frino_icons: ^2.0.0
+  appflowy_editor: ^2.3.3
+  google_fonts: ^6.2.1
+  flutter_svg: ^2.0.10+1
+  deep_menu: ^1.0.1
+  top_snackbar_flutter: ^3.1.0
+
+  # network
+  http: ^1.2.0
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
+  fpdart: ^1.1.0
+  uuid: ^4.3.3
+  url_launcher: ^6.2.5
+
+  # utils and services
+  shared_preferences: ^2.2.2
+  flutter_country_code: ^1.2.2
+
+  # data
+  package_info_plus: ^5.0.1
+  share_plus: ^7.2.2
+  quran:
+    path: ./plugins/quran
+  intl: ^0.18.1
+  hijri: ^3.0.0
+
+  # firebase
+  firebase_core: ^2.25.4
+  firebase_analytics: ^10.8.5
+  firebase_crashlytics: ^3.4.14
+  firebase_auth: ^4.17.4
+  cloud_firestore: ^4.15.4
+  gleap_sdk: ^13.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.1
+  build_runner: ^2.4.8
+  freezed: ^2.4.6
+  json_serializable: ^6.7.1
+  flutter_native_splash: ^2.3.9
+  flutter_launcher_icons: ^0.13.1
+
+flutter_native_splash:
+  color: "#052F48"
+  android_12:
+    color: "#052F48"
+flutter_icons:
+  ios: true
+  android: true
+  image_path: "assets/logo/foreground_logo.png"
+  remove_alpha_ios: true
+  adaptive_icon_foreground: "assets/logo/foreground_logo.png"
+  adaptive_icon_background: "#FFFFFF"
+
+flutter:
+  uses-material-design: true
+  # run this to generate a Freezed Models : flutter pub run build_runner build --delete-conflicting-outputs
+  generate: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/images/
+    - assets/images/icons/
+    - assets/logo/
+
+  # To add custom fonts to your application, add a fonts section here,
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700

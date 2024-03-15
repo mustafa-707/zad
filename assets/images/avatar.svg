@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="38px" height="38px" viewBox="0 0 38 38" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>Avatar</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="19" cy="19" r="19"></circle>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="10-Post-Details" transform="translate(-327.000000, -975.000000)">
+            <g id="Cell-2" transform="translate(0.000000, 967.000000)">
+                <g id="Avatar" transform="translate(327.000000, 8.000000)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="Mask" fill="#E2E1E7" xlink:href="#path-1"></use>
+                    <path d="M19,26.4214 C13.8479125,26.4214 3.5625,29.0073 3.5625,34.14015 L3.5625,37.999525 L34.4375,37.999525 L34.4375,34.14015 C34.4375,29.0073 24.1520875,26.4214 19,26.4214 M19,22.5625 C23.26455,22.5625 26.71875,19.1083 26.71875,14.84375 C26.71875,10.5789625 23.26455,7.125 19,7.125 C14.73545,7.125 11.28125,10.5789625 11.28125,14.84375 C11.28125,19.1083 14.73545,22.5625 19,22.5625" id="Fill-1" fill="#FFFFFF" mask="url(#mask-2)"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
