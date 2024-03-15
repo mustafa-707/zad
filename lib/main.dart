@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:gleap_sdk/gleap_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:zad_app/app/app.dart';
+import 'package:zad_app/utils/env.dart';
 
 Future<void> main() async {
   await runZonedGuarded<Future<void>>(
@@ -40,7 +41,7 @@ Future<void> _guardedInitalization() async {
   try {
     await Firebase.initializeApp();
     if (!Platform.isWindows) {
-      Gleap.initialize(token: 'CscbW4KQ5zTxqLbX3Qjd50FIA5W3HsPJ');
+      Gleap.initialize(token: kGleapApiKey);
       if (!kIsWeb) {
         FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
         FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(kDebugMode ? false : true);

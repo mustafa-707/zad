@@ -31,7 +31,6 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
-
 # Symbolication related
 app.*.symbols
 
@@ -93,3 +92,6 @@ Thumbs.db
 *.mov
 *.wmv
 
+# private keys
+/android/app/google-services.json
+/lib/utils/env.dart
