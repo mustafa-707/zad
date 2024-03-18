@@ -17,8 +17,7 @@ import 'package:zad_app/utils/theme/app_theme.dart';
 
 final appReadyProvider = StateProvider<bool>((ref) => false);
 
-final appSettingsProvider =
-    StateNotifierProvider<AppSettingsController, AppSettings>((ref) {
+final appSettingsProvider = StateNotifierProvider<AppSettingsController, AppSettings>((ref) {
   final sharedPrefs = ref.watch(sharedPrefsProvider);
   assert(
     sharedPrefs != null,
@@ -82,8 +81,7 @@ class AppSettingsController extends StateNotifier<AppSettings> {
     }
   }
 
-  Future<ContentLanguage?> getUserContentLanguage() async =>
-      state.selectedLanguage;
+  Future<ContentLanguage?> getUserContentLanguage() async => state.selectedLanguage;
 
   Future<void> updateUserContentLanguage(ContentLanguage language) async {
     await sharedPreferences.setString(
@@ -136,8 +134,7 @@ class AppSettingsController extends StateNotifier<AppSettings> {
     return userData;
   }
 
-  Future<Either<String, UserCredential>> adminLogin(
-      String email, String password) async {
+  Future<Either<String, UserCredential>> adminLogin(String email, String password) async {
     try {
       final auth = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,

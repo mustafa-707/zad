@@ -52,8 +52,7 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                                 controller: nameController,
                                 style: theme.textTheme.titleLarge,
                                 decoration: InputDecoration(
-                                  hintText: appSettings.user?.info?.name ??
-                                      'Anonymous User',
+                                  hintText: appSettings.user?.info?.name ?? 'Anonymous User',
                                   contentPadding: EdgeInsets.zero,
                                   border: const OutlineInputBorder(
                                     borderRadius: BorderRadius.zero,
@@ -113,17 +112,14 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                               text: translate.deleteAccout,
                               width: buttonWidth,
                               onPressed: () {
-                                _launchUrl(
-                                    'https://forms.gle/vzyHP18jJQyTdE2g8');
+                                _launchUrl('https://forms.gle/vzyHP18jJQyTdE2g8');
                               },
                             ),
                             NormalButton(
                               text: translate.logout,
                               width: buttonWidth,
                               onPressed: () async {
-                                await ref
-                                    .read(appSettingsProvider.notifier)
-                                    .logout();
+                                await ref.read(appSettingsProvider.notifier).logout();
                                 setState(() {
                                   isEditing = !isEditing;
                                 });
