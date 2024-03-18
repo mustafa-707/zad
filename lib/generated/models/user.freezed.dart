@@ -12,7 +12,7 @@ part of '../../models/user.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 UserProfile _$UserProfileFromJson(Map<String, dynamic> json) {
   return _UserProfile.fromJson(json);
@@ -21,7 +21,7 @@ UserProfile _$UserProfileFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$UserProfile {
   String get name => throw _privateConstructorUsedError;
-  String get type => throw _privateConstructorUsedError;
+  UserType get type => throw _privateConstructorUsedError;
   String get uid => throw _privateConstructorUsedError;
   ContentLanguage? get language => throw _privateConstructorUsedError;
   String? get deviceId => throw _privateConstructorUsedError;
@@ -41,7 +41,7 @@ abstract class $UserProfileCopyWith<$Res> {
   @useResult
   $Res call(
       {String name,
-      String type,
+      UserType type,
       String uid,
       ContentLanguage? language,
       String? deviceId,
@@ -78,7 +78,7 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as String,
+              as UserType,
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
@@ -121,7 +121,7 @@ abstract class _$$UserProfileImplCopyWith<$Res>
   @useResult
   $Res call(
       {String name,
-      String type,
+      UserType type,
       String uid,
       ContentLanguage? language,
       String? deviceId,
@@ -157,7 +157,7 @@ class __$$UserProfileImplCopyWithImpl<$Res>
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as String,
+              as UserType,
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
@@ -195,7 +195,7 @@ class _$UserProfileImpl implements _UserProfile {
   @override
   final String name;
   @override
-  final String type;
+  final UserType type;
   @override
   final String uid;
   @override
@@ -247,7 +247,7 @@ class _$UserProfileImpl implements _UserProfile {
 abstract class _UserProfile implements UserProfile {
   const factory _UserProfile(
       {required final String name,
-      required final String type,
+      required final UserType type,
       required final String uid,
       final ContentLanguage? language,
       final String? deviceId,
@@ -259,7 +259,7 @@ abstract class _UserProfile implements UserProfile {
   @override
   String get name;
   @override
-  String get type;
+  UserType get type;
   @override
   String get uid;
   @override

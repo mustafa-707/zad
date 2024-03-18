@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 import 'package:zad_app/models/app_settings.dart';
 import 'package:zad_app/models/content_langague.dart';
 import 'package:zad_app/models/user.dart';
@@ -12,11 +15,11 @@ import 'package:zad_app/providers/shared_preferences.dart';
 import 'package:zad_app/utils/conestants/firebase_collections.dart';
 import 'package:zad_app/utils/lang/locale.dart';
 import 'package:zad_app/utils/theme/app_theme.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 final appReadyProvider = StateProvider<bool>((ref) => false);
 
-final appSettingsProvider = StateNotifierProvider<AppSettingsController, AppSettings>((ref) {
+final appSettingsProvider =
+    StateNotifierProvider<AppSettingsController, AppSettings>((ref) {
   final sharedPrefs = ref.watch(sharedPrefsProvider);
   assert(
     sharedPrefs != null,
@@ -45,21 +48,24 @@ class AppSettingsController extends StateNotifier<AppSettings> {
             flag: langaugeFormated.first,
             name: langaugeFormated.last,
           );
-    final user = FirebaseAuth.instance.currentUser;
+    final admin = FirebaseAuth.instance.currentUser;
 
     return AppSettings(
       locale: locale ?? LocaleService.getDefaultLocale(),
       theme: theme ?? ThemeService.getDefaultTheme(),
       selectedLanguage: selectedLanguage,
-      user: UserData(
-        user: user,
-        info: UserProfile(
-          name: user?.email ?? user?.displayName ?? "Guest User",
-          type: (user?.isAnonymous ?? false) ? "normal" : "Admin",
-          uid: user?.uid ?? "",
-          language: selectedLanguage,
-        ),
-      ),
+      user: admin != null
+          ? UserData(
+              user: admin,
+              //TODO: load data from firestore not from auth user.
+              info: UserProfile(
+                name: admin.displayName ?? admin.email ?? "Admin User",
+                type: UserType.admin,
+                uid: admin.uid,
+                language: selectedLanguage,
+              ),
+            )
+          : null,
     );
   }
 
@@ -68,7 +74,7 @@ class AppSettingsController extends StateNotifier<AppSettings> {
       await sharedPreferences.setString(PrefKeys.appLocale, locale);
       HijriCalendar.setLocal(locale);
 
-      state = _settingsFromPrefs(sharedPreferences);
+      state = state.copyWith(locale: locale);
     } else {
       throw Exception("Unsupported locale '$locale'");
     }
@@ -77,7 +83,7 @@ class AppSettingsController extends StateNotifier<AppSettings> {
   Future<void> updateTheme(String theme) async {
     if (LocaleService.isSupportedLocale(theme)) {
       await sharedPreferences.setString(PrefKeys.appTheme, theme);
-      state = _settingsFromPrefs(sharedPreferences);
+      state = state.copyWith(theme: theme);
     } else {
       throw Exception("Unsupported locale '$theme'");
     }
@@ -101,7 +107,7 @@ class AppSettingsController extends StateNotifier<AppSettings> {
 
       return userLanguage;
     } catch (e) {
-      log('Faild to fetch user language');
+      log('Failed to fetch user language');
       return null;
     }
   }
@@ -158,24 +164,26 @@ class AppSettingsController extends StateNotifier<AppSettings> {
     }
   }
 
-  Future<Either<String, UserCredential>> anonymouslyLogin() async {
-    try {
-      final auth = await FirebaseAuth.instance.signInAnonymously();
-      final profile = UserProfile(
+  Future<UserData> offlineLogin() async {
+    final jsonUser = sharedPreferences.getString(PrefKeys.offlineUserProfile);
+    final UserData userData;
+    if (jsonUser != null) {
+      userData = UserData(info: UserProfile.fromJson(jsonDecode(jsonUser)));
+    } else {
+      userData = UserData(
+          info: UserProfile(
         name: 'Guest User',
-        type: 'normal',
-        uid: auth.user!.uid,
-      );
-      updateUserData(profile);
-      return Either.right(auth);
-    } on FirebaseAuthException catch (e) {
-      return Either.left(e.message!);
-    } catch (e) {
-      return Either.left('implementation error');
+        type: UserType.normal,
+        uid: const Uuid().v4(),
+      ));
     }
+    _saveOfflineUserProfile(userData.info!);
+    state = state.copyWith(user: userData);
+    return userData;
   }
 
-  Future<Either<String, UserCredential>> adminLogin(String email, String password) async {
+  Future<Either<String, UserCredential>> adminLogin(
+      String email, String password) async {
     try {
       final auth = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
@@ -183,8 +191,8 @@ class AppSettingsController extends StateNotifier<AppSettings> {
       );
       final profile = UserProfile(
         name: auth.user?.displayName ?? email,
-        language: state.user?.info?.language,
-        type: 'Admin',
+        language: state.user?.info?.language ?? state.selectedLanguage,
+        type: UserType.admin,
         uid: auth.user!.uid,
       );
       updateUserData(profile);
@@ -196,15 +204,35 @@ class AppSettingsController extends StateNotifier<AppSettings> {
     }
   }
 
-  Future<void> saveNewUserName(String name) async {
+  Future<void> updateUserName(String name) async {
+    if (name.trim().isEmpty) return;
+    if (FirebaseAuth.instance.currentUser != null) {
+      return updateLoginUserName(name);
+    } else {
+      return updateOfflineUserName(name);
+    }
+  }
+
+  Future<void> _saveOfflineUserProfile(UserProfile userProfile) {
+    return sharedPreferences.setString(
+        PrefKeys.offlineUserProfile, jsonEncode(userProfile.toJson()));
+  }
+
+  Future<void> updateOfflineUserName(String name) async {
+    final userProfile = state.user!.info!.copyWith(name: name);
+    state = state.copyWith(user: UserData(info: userProfile));
+    return _saveOfflineUserProfile(userProfile);
+  }
+
+  Future<void> updateLoginUserName(String name) async {
     try {
-      if (name.isEmpty) return;
       final userData = FirebaseCollections.users.withConverter<UserProfile>(
         fromFirestore: (snapshot, _) => UserProfile.fromJson(snapshot.data()!),
         toFirestore: (user, _) => user.toJson(),
       );
       final userAuth = FirebaseAuth.instance.currentUser;
       if (userAuth == null) throw Exception('User is null');
+
       final user = state.user?.copyWith(
         info: state.user?.info?.copyWith(
           name: name,
@@ -213,7 +241,10 @@ class AppSettingsController extends StateNotifier<AppSettings> {
       state = state.copyWith(
         user: user,
       );
-      await userData.doc(userAuth.uid).set(state.user!.info!);
+      await Future.wait([
+        FirebaseAuth.instance.currentUser!.updateDisplayName(name),
+        userData.doc(userAuth.uid).set(state.user!.info!),
+      ]);
     } catch (e) {
       throw Exception('Faild to update user  $e');
     }
@@ -221,8 +252,7 @@ class AppSettingsController extends StateNotifier<AppSettings> {
 
   Future<void> logout() async {
     await FirebaseAuth.instance.signOut();
-    await anonymouslyLogin();
-    state = state.copyWith(user: null);
+    await offlineLogin();
   }
 }
 

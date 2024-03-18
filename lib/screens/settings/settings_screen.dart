@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:zad_app/components/appbar/sub_screen_appbar.dart';
+import 'package:zad_app/models/user.dart';
 import 'package:zad_app/providers/app_settings.dart';
 import 'package:zad_app/screens/admin/auth/login.dart';
 import 'package:zad_app/screens/admin/categories_manager/categories_manager.dart';
@@ -36,7 +37,7 @@ class SettingsScreen extends ConsumerWidget {
             const SizedBox(height: 24),
             const ProfileTab(),
             const SizedBox(height: 24),
-            auth.user?.info?.type == 'Admin'
+            auth.user?.info?.type == UserType.admin
                 ? SettingsTab(
                     icon: FrinoIcons.f_pen,
                     title: translate.joinEditor,
@@ -45,13 +46,15 @@ class SettingsScreen extends ConsumerWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ContentLanguagePickerScreen.editor(
+                          builder: (context) =>
+                              ContentLanguagePickerScreen.editor(
                             onSelectLanguage: (selectedLanguage) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => CategoriesManager(
-                                    title: "${translate.categoryOf} ${selectedLanguage.name}",
+                                    title:
+                                        "${translate.categoryOf} ${selectedLanguage.name}",
                                     selectedLanguage: selectedLanguage,
                                   ),
                                 ),

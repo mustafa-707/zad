@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 class NormalButton extends StatelessWidget {
   final String text;
   final GestureTapCallback onPressed;
+  final double width;
+
   const NormalButton({
     super.key,
     required this.text,
     required this.onPressed,
+    this.width = 165,
   });
 
   @override
@@ -14,7 +17,7 @@ class NormalButton extends StatelessWidget {
     final theme = Theme.of(context);
 
     return SizedBox(
-      width: 165,
+      width: width,
       height: 48,
       child: ElevatedButton(
         style: ButtonStyle(

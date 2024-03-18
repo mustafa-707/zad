@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:frino_icons/frino_icons.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zad_app/components/buttons/normal_btn.dart';
+import 'package:zad_app/models/user.dart';
 import 'package:zad_app/providers/app_settings.dart';
 import 'package:zad_app/utils/lang/locale.export.dart';
 import 'package:zad_app/utils/theme/images.dart';
@@ -21,9 +24,9 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
   Widget build(BuildContext context) {
     final nameController = useTextEditingController();
     final theme = Theme.of(context);
-    final auth = ref.watch(appSettingsProvider);
+    final appSettings = ref.watch(appSettingsProvider);
     final translate = AppLocalizations.of(context)!;
-
+    log(appSettings.toString(), name: "appSettings");
     return Padding(
       padding: const EdgeInsetsDirectional.only(start: 32.0, end: 16.0),
       child: Column(
@@ -45,7 +48,8 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                                 controller: nameController,
                                 style: theme.textTheme.titleLarge,
                                 decoration: InputDecoration(
-                                  hintText: auth.user?.info?.name ?? 'Anonymous User',
+                                  hintText: appSettings.user?.info?.name ??
+                                      'Anonymous User',
                                   contentPadding: EdgeInsets.zero,
                                   border: const OutlineInputBorder(
                                     borderRadius: BorderRadius.zero,
@@ -55,12 +59,12 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                               ),
                             )
                           : Text(
-                              auth.user?.info?.name ?? 'Anonymous User',
+                              appSettings.user!.info!.name,
                               style: theme.textTheme.titleLarge,
                             ),
                       const SizedBox(height: 4),
                       Text(
-                        auth.user?.info?.type ?? 'Normal User',
+                        appSettings.user!.info!.type.name,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: theme.colorScheme.primary.withOpacity(.6),
                         ),
@@ -74,7 +78,7 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                   setState(() {
                     isEditing = !isEditing;
                     if (!isEditing) {
-                      ref.read(appSettingsProvider.notifier).saveNewUserName(
+                      ref.read(appSettingsProvider.notifier).updateUserName(
                             nameController.text,
                           );
                     }
@@ -87,7 +91,7 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
             ],
           ),
           Visibility(
-            visible: auth.user?.info?.type == "Admin",
+            visible: appSettings.user?.info?.type == UserType.admin,
             child: Column(
               children: [
                 AnimatedOpacity(
@@ -104,13 +108,18 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                             NormalButton(
                               text: translate.deleteAccout,
                               onPressed: () {
-                                _launchUrl('https://forms.gle/vzyHP18jJQyTdE2g8');
+                                _launchUrl(
+                                    'https://forms.gle/vzyHP18jJQyTdE2g8');
                               },
                             ),
                             NormalButton(
                               text: translate.logout,
+                              width:
+                                  (MediaQuery.of(context).size.width / 2) - 35,
                               onPressed: () async {
-                                await ref.read(appSettingsProvider.notifier).logout();
+                                await ref
+                                    .read(appSettingsProvider.notifier)
+                                    .logout();
                               },
                             ),
                           ],
