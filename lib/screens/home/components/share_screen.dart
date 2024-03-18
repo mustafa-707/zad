@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:frino_icons/frino_icons.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
@@ -42,7 +41,8 @@ class ShareScreen extends HookConsumerWidget {
             onPressed: () async {
               await Clipboard.setData(
                 ClipboardData(
-                  text: shareTexts.concatenateWithSeparator + appWaterMark(context),
+                  text: shareTexts.concatenateWithSeparator +
+                      appWaterMark(context),
                 ),
               ).then((value) {
                 var snackBar = SnackBar(content: Text(translate.copied));
@@ -86,12 +86,15 @@ class ShareScreen extends HookConsumerWidget {
                             onPressed: () async {
                               await Clipboard.setData(
                                 ClipboardData(
-                                  text: shareTexts.concatenateWithSeparator + appWaterMark(context),
+                                  text: shareTexts.concatenateWithSeparator +
+                                      appWaterMark(context),
                                 ),
                               ).then((value) {
-                                var snackBar = SnackBar(content: Text(translate.copied));
+                                var snackBar =
+                                    SnackBar(content: Text(translate.copied));
 
-                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
                               });
                             },
                             icon: const Icon(
@@ -101,11 +104,14 @@ class ShareScreen extends HookConsumerWidget {
                           IconButton(
                             onPressed: () {
                               Share.share(
-                                shareTexts.list[index].values.first + appWaterMark(context),
+                                shareTexts.list[index].values.first +
+                                    appWaterMark(context),
                               );
                             },
                             icon: Icon(
-                              Platform.isIOS ? FrinoIcons.f_upload_square : FrinoIcons.f_share,
+                              Platform.isIOS
+                                  ? FrinoIcons.f_upload_square
+                                  : FrinoIcons.f_share,
                             ),
                           ),
                         ],
@@ -115,7 +121,8 @@ class ShareScreen extends HookConsumerWidget {
                   GestureDetector(
                     onTap: () {
                       if (shareTexts.list[index].keys.first.isEmpty) return;
-                      var snackBar = SnackBar(content: Text(shareTexts.list[index].keys.first));
+                      var snackBar = SnackBar(
+                          content: Text(shareTexts.list[index].keys.first));
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     },
                     child: Container(

@@ -7,4 +7,5 @@ class PrefKeys {
   static const appLocale = "app_locale";
   static const appTheme = "app_theme";
   static const userContentLanguage = "user_content_language";
+  static const offlineUserProfile = "offline_user_profile";
 }

@@ -5,16 +5,18 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zad_app/components/progress_index.dart';
+import 'package:zad_app/models/user.dart';
 import 'package:zad_app/providers/app_settings.dart';
 import 'package:zad_app/providers/shared_preferences.dart';
-import 'package:zad_app/screens/main_screen.dart';
 import 'package:zad_app/screens/content/language_picker/content_langauge_picker.dart';
+import 'package:zad_app/screens/main_screen.dart';
 import 'package:zad_app/screens/settings/settings_screen.dart';
 import 'package:zad_app/utils/lang/locale.export.dart';
 import 'package:zad_app/utils/theme/images.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
+
   static const routeName = '/';
 
   @override
@@ -27,32 +29,32 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
     ref.read(sharedPrefsProvider.notifier).state = prefs;
 
-    final user = ref.read(appSettingsProvider).user;
+    final appSettings = ref.read(appSettingsProvider);
 
-    if (user?.user != null) {
-      // make sure context is still viable as we are in async function
-      if (!mounted) return;
-      log("user loggedIn successfully : type : ${user!.user!.isAnonymous ? "anonymous" : "admin"} -- id : ${user.user!.uid} -- ${user.info?.language}");
+    final user = appSettings.user ??
+        await ref.read(appSettingsProvider.notifier).offlineLogin();
 
-      if (user.info?.language != null) {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          MainScreen.routeName,
-          (_) => false,
-        );
-        if (!user.user!.isAnonymous) {
-          Navigator.of(context).pushNamed(
-            SettingsScreen.routeName,
-          );
-        }
-      } else {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const ContentLanguagePickerScreen.onBoarding()),
-          (_) => false,
+    // make sure context is still viable as we are in async function
+    if (!mounted) return;
+    log("user loggedIn successfully : ${user.info?.toJson()} -- id : ${user.user?.uid} -- ${user.info?.language}");
+
+    if (appSettings.selectedLanguage != null) {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        MainScreen.routeName,
+        (_) => false,
+      );
+      if (user.info?.type == UserType.admin) {
+        Navigator.of(context).pushNamed(
+          SettingsScreen.routeName,
         );
       }
     } else {
-      await ref.read(appSettingsProvider.notifier).anonymouslyLogin();
-      _initializeApp();
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+            builder: (context) =>
+                const ContentLanguagePickerScreen.onBoarding()),
+        (_) => false,
+      );
     }
   }
 

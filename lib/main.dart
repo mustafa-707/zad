@@ -41,10 +41,11 @@ Future<void> _guardedInitalization() async {
   try {
     await Firebase.initializeApp();
     if (!Platform.isWindows) {
-      Gleap.initialize(token: kGleapApiKey);
+      Gleap.initialize(token: gleapApiKey);
       if (!kIsWeb) {
         FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-        FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(kDebugMode ? false : true);
+        FirebaseCrashlytics.instance
+            .setCrashlyticsCollectionEnabled(kDebugMode ? false : true);
         Isolate.current.addErrorListener(
           RawReceivePort((pair) async {
             final List<dynamic> errorAndStacktrace = pair;
