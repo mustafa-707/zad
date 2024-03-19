@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part '../generated/models/content_langague.freezed.dart';
@@ -10,5 +12,19 @@ class ContentLanguage with _$ContentLanguage {
     required String name,
   }) = _ContentLanguage;
 
-  factory ContentLanguage.fromJson(Map<String, dynamic> json) => _$ContentLanguageFromJson(json);
+  static ContentLanguage? fromString(String? string) {
+    if (string == null) return null;
+    try {
+      return ContentLanguage.fromJson(jsonDecode(string));
+    } catch (e) {
+      final languageFormatted = string.split(":");
+      return ContentLanguage(
+        flag: languageFormatted.first,
+        name: languageFormatted.last,
+      );
+    }
+  }
+
+  factory ContentLanguage.fromJson(Map<String, dynamic> json) =>
+      _$ContentLanguageFromJson(json);
 }
