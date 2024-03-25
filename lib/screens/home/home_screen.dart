@@ -7,6 +7,8 @@ import 'package:zad_app/screens/home/components/category_section.dart';
 import 'package:zad_app/screens/home/components/search_field.dart';
 import 'package:zad_app/utils/theme/images.dart';
 
+import 'components/banners_slider.dart';
+
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -26,6 +28,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           children: [
             const SizedBox(height: 32),
             const SearchWidget(),
+            const SizedBox(height: 16),
+            BannersSlider(banners: data.banners),
             const SizedBox(height: 16),
             Column(
               children: [
