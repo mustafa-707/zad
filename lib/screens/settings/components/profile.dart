@@ -13,6 +13,7 @@ import 'package:zad_app/utils/theme/images.dart';
 
 class ProfileTab extends StatefulHookConsumerWidget {
   const ProfileTab({super.key});
+
   @override
   ConsumerState<ProfileTab> createState() => _ProfileTabState();
 }
@@ -59,12 +60,12 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                               ),
                             )
                           : Text(
-                              appSettings.user!.info!.name,
+                              appSettings.userName,
                               style: theme.textTheme.titleLarge,
                             ),
                       const SizedBox(height: 4),
                       Text(
-                        appSettings.user!.info!.type.name,
+                        appSettings.userType.name,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: theme.colorScheme.primary.withOpacity(.6),
                         ),
