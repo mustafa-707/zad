@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:zad_app/components/buttons/normal_btn.dart';
 import 'package:zad_app/models/user.dart';
 import 'package:zad_app/providers/app_settings.dart';
+import 'package:zad_app/utils/helpers/extensions.dart';
 import 'package:zad_app/utils/lang/locale.export.dart';
 import 'package:zad_app/utils/theme/images.dart';
 
@@ -28,6 +29,8 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
     final appSettings = ref.watch(appSettingsProvider);
     final translate = AppLocalizations.of(context)!;
     log(appSettings.toString(), name: "appSettings");
+    // padding (24*2) + space between buttons (12) = 60
+    final buttonWidth = (context.width - 60) / 2;
     return Padding(
       padding: const EdgeInsetsDirectional.only(start: 32.0, end: 16.0),
       child: Column(
@@ -108,6 +111,7 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                           children: [
                             NormalButton(
                               text: translate.deleteAccout,
+                              width: buttonWidth,
                               onPressed: () {
                                 _launchUrl(
                                     'https://forms.gle/vzyHP18jJQyTdE2g8');
@@ -115,8 +119,7 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                             ),
                             NormalButton(
                               text: translate.logout,
-                              width:
-                                  (MediaQuery.of(context).size.width / 2) - 35,
+                              width: buttonWidth,
                               onPressed: () async {
                                 await ref
                                     .read(appSettingsProvider.notifier)
