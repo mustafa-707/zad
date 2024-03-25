@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:gleap_sdk/gleap_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:zad_app/app/app.dart';
+import 'package:zad_app/firebase_options.dart';
 import 'package:zad_app/utils/env.dart';
 
 Future<void> main() async {
@@ -39,7 +40,10 @@ Future<void> _guardedInitalization() async {
     DeviceOrientation.portraitUp,
   ]);
   try {
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+
     if (!Platform.isWindows) {
       Gleap.initialize(token: gleapApiKey);
       if (!kIsWeb) {

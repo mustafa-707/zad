@@ -41,7 +41,7 @@ dependencies:
   flutter_country_code: ^1.2.2
 
   # data
-  package_info_plus: ^5.0.1
+  package_info_plus: ^6.0.0
   share_plus: ^7.2.2
   quran:
     path: ./plugins/quran
@@ -49,11 +49,11 @@ dependencies:
   hijri: ^3.0.0
 
   # firebase
-  firebase_core: ^2.25.4
-  firebase_analytics: ^10.8.5
-  firebase_crashlytics: ^3.4.14
-  firebase_auth: ^4.17.4
-  cloud_firestore: ^4.15.4
+  firebase_core: ^2.27.1
+  firebase_analytics: ^10.8.10
+  firebase_crashlytics: ^3.4.19
+  firebase_auth: ^4.17.9
+  cloud_firestore: ^4.15.9
   gleap_sdk: ^13.2.2
 
 dev_dependencies:
