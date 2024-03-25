@@ -124,6 +124,9 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                                 await ref
                                     .read(appSettingsProvider.notifier)
                                     .logout();
+                                setState(() {
+                                  isEditing = !isEditing;
+                                });
                               },
                             ),
                           ],
