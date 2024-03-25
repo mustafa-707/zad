@@ -8,6 +8,8 @@ part '../generated/models/app_settings.freezed.dart';
 
 @freezed
 class AppSettings with _$AppSettings {
+  const AppSettings._();
+
   const factory AppSettings({
     required String locale,
     required String theme,
@@ -20,4 +22,8 @@ class AppSettings with _$AppSettings {
     theme: ThemeService.defaultTheme,
     selectedLanguage: null,
   );
+
+  String get userName => user?.info?.name ?? 'Guest User';
+
+  UserType get userType => user?.info?.type ?? UserType.normal;
 }

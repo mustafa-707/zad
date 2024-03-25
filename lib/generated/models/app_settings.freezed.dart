@@ -164,12 +164,13 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AppSettingsImpl implements _AppSettings {
+class _$AppSettingsImpl extends _AppSettings {
   const _$AppSettingsImpl(
       {required this.locale,
       required this.theme,
       this.selectedLanguage,
-      this.user});
+      this.user})
+      : super._();
 
   @override
   final String locale;
@@ -208,12 +209,13 @@ class _$AppSettingsImpl implements _AppSettings {
       __$$AppSettingsImplCopyWithImpl<_$AppSettingsImpl>(this, _$identity);
 }
 
-abstract class _AppSettings implements AppSettings {
+abstract class _AppSettings extends AppSettings {
   const factory _AppSettings(
       {required final String locale,
       required final String theme,
       final ContentLanguage? selectedLanguage,
       final UserData? user}) = _$AppSettingsImpl;
+  const _AppSettings._() : super._();
 
   @override
   String get locale;
