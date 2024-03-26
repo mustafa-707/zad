@@ -31,6 +31,7 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
     log(appSettings.toString(), name: "appSettings");
     // padding (24*2) + space between buttons (12) = 60
     final buttonWidth = (context.width - 60) / 2;
+
     return Padding(
       padding: const EdgeInsetsDirectional.only(start: 32.0, end: 16.0),
       child: Column(

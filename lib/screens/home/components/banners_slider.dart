@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:zad_app/models/app_banner.dart';
 
 class BannersSlider extends StatelessWidget {
@@ -11,42 +12,56 @@ class BannersSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blueGrey.shade100,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
-        child: CarouselSlider(
-            items: banners.map((banner) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                    decoration: BoxDecoration(
-                        color: Colors.black12,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      child: CarouselSlider(
+          items: banners.map((banner) {
+            return Builder(
+              builder: (BuildContext context) {
+                return Material(
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                  child: InkWell(
+                    onTap: banner.url.isEmpty
+                        ? null
+                        : () {
+                            _launchUrl(banner.url);
+                          },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(12),
+                        ),
                         image: DecorationImage(
-                            image: NetworkImage(banner.url),
-                            fit: BoxFit.cover)),
-                  );
-                },
-              );
-            }).toList(),
-            options: CarouselOptions(
-              height: 100,
-              aspectRatio: 16 / 9,
-              viewportFraction: 0.8,
-              initialPage: 0,
-              enableInfiniteScroll: true,
-              reverse: false,
-              autoPlay: true,
-              autoPlayInterval: const Duration(seconds: 3),
-              autoPlayAnimationDuration: const Duration(milliseconds: 800),
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enlargeCenterPage: true,
-              enlargeFactor: 0.3,
-              scrollDirection: Axis.horizontal,
-            )),
-      ),
+                          image: NetworkImage(
+                            banner.url,
+                            scale: 1.4,
+                          ),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          }).toList(),
+          options: CarouselOptions(
+            height: 132,
+            autoPlay: true,
+            autoPlayInterval: const Duration(seconds: 7),
+            autoPlayAnimationDuration: const Duration(milliseconds: 1650),
+            autoPlayCurve: Curves.fastOutSlowIn,
+            enlargeCenterPage: true,
+          )),
     );
+  }
+
+  Future<void> _launchUrl(String url) async {
+    if (!await launchUrl(Uri.parse(url))) {
+      throw Exception('Could not launch $url');
+    }
   }
 }
