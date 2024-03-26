@@ -33,7 +33,7 @@ class CategoryAdminWidget extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => ArticlesManager(
                     title: data.title,
-                    ids: data.articles ?? {},
+                    ids: data.articles,
                     selectedLanguage: data.language,
                     parentCategory: data,
                   ),

@@ -40,7 +40,8 @@ final _getRootCategoriesFutureProvider = FutureProvider.family((
   }
 });
 
-final getListOfCategoriesByIdsFutureProvider = FutureProvider.family((ref, Set<String> list) async {
+final _getListOfCategoriesByIdsFutureProvider =
+    FutureProvider.family((ref, Set<String> list) async {
   try {
     final categoryQuery = FirebaseCollections.categories
         .withConverter<DawaCategory>(
@@ -78,8 +79,8 @@ class CategoriesStateController extends StateNotifier<AsyncValue<List<DawaCatego
         ref.invalidate(_getRootCategoriesFutureProvider(language));
         return ref.watch(_getRootCategoriesFutureProvider(language));
       } else {
-        ref.invalidate(getListOfCategoriesByIdsFutureProvider(subCategoriesIds));
-        return ref.watch(getListOfCategoriesByIdsFutureProvider(subCategoriesIds));
+        ref.invalidate(_getListOfCategoriesByIdsFutureProvider(subCategoriesIds));
+        return ref.watch(_getListOfCategoriesByIdsFutureProvider(subCategoriesIds));
       }
     } catch (e) {
       throw Exception('Faild to get categories $e');

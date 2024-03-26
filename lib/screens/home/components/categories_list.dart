@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:zad_app/components/appbar/sub_screen_appbar.dart';
 import 'package:zad_app/components/progress_index.dart';
-import 'package:zad_app/providers/admin.dart';
+import 'package:zad_app/providers/home.dart';
 import 'package:zad_app/screens/content/category_widget.dart';
 import 'package:zad_app/screens/home/components/articles_list.dart';
 import 'package:zad_app/utils/theme/images.dart';
@@ -43,7 +43,7 @@ class CategoriesList extends ConsumerWidget {
                               MaterialPageRoute(
                                 builder: (context) => ArticleList(
                                   title: categories[index].title,
-                                  ids: categories[index].articles ?? {},
+                                  ids: categories[index].articles,
                                 ),
                               ),
                             );

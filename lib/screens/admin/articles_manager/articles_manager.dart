@@ -91,7 +91,7 @@ class ArticlesManager extends ConsumerWidget {
 
   Future<void> updateLists(WidgetRef ref, articleId) async {
     final newArticles = List<String>.from(
-      parentCategory.articles ?? {},
+      parentCategory.articles,
     );
 
     newArticles.add(articleId);

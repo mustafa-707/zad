@@ -26,8 +26,7 @@ final getRootCategoriesFutureProvider = FutureProvider((ref) async {
 
     final categoryQuery = FirebaseCollections.categories
         .withConverter<DawaCategory>(
-          fromFirestore: (snapshot, _) =>
-              DawaCategory.fromJson(snapshot.data()!),
+          fromFirestore: (snapshot, _) => DawaCategory.fromJson(snapshot.data()!),
           toFirestore: (category, _) => category.toJson(),
         )
         .where(
@@ -35,41 +34,33 @@ final getRootCategoriesFutureProvider = FutureProvider((ref) async {
           isEqualTo: language!.toJson(),
         )
         .where(
-          'parentCategory',
-          isEqualTo: null,
-        )
-        .where(
           'isArchived',
           isEqualTo: false,
         )
         .where(
-          'articles',
-          isNotEqualTo: null,
-        )
-        .orderBy(
-          'createdAt',
-          descending: true,
-        )
-        .orderBy(
-          'editedAt',
-          descending: true,
-        );
+      'articles',
+      isEqualTo: [],
+    ).where(
+      'subCategories',
+      isNotEqualTo: [],
+    );
     final categories = await categoryQuery.get();
+    log("Failed to get categories: ${categories.docs.length}");
+
     return categories.docs.map((e) => e.data()).toList();
   } catch (e) {
+    log("Failed to get categories: $e");
     throw Exception('Failed to get categories: $e');
   }
 });
 
-final _getLastTenArticlesFutureProvider =
-    Provider<Future<List<DawaArticle>>>((ref) async {
+final _getLastTenArticlesFutureProvider = Provider<Future<List<DawaArticle>>>((ref) async {
   try {
     final language = ref.watch(appSettingsProvider).selectedLanguage;
 
     final articleQuery = FirebaseCollections.articles
         .withConverter<DawaArticle>(
-          fromFirestore: (snapshot, _) =>
-              DawaArticle.fromJson(snapshot.data()!),
+          fromFirestore: (snapshot, _) => DawaArticle.fromJson(snapshot.data()!),
           toFirestore: (article, _) => article.toJson(),
         )
         .where(
@@ -98,8 +89,7 @@ final getUserListOfArticlesByIdsFutureProvider =
 
     final articleQuery = FirebaseCollections.articles
         .withConverter<DawaArticle>(
-          fromFirestore: (snapshot, _) =>
-              DawaArticle.fromJson(snapshot.data()!),
+          fromFirestore: (snapshot, _) => DawaArticle.fromJson(snapshot.data()!),
           toFirestore: (article, _) => article.toJson(),
         )
         .where(
@@ -128,8 +118,7 @@ final getUserListOfArticlesFutureProvider = FutureProvider((ref) async {
 
     final articleQuery = FirebaseCollections.articles
         .withConverter<DawaArticle>(
-          fromFirestore: (snapshot, _) =>
-              DawaArticle.fromJson(snapshot.data()!),
+          fromFirestore: (snapshot, _) => DawaArticle.fromJson(snapshot.data()!),
           toFirestore: (article, _) => article.toJson(),
         )
         .where(
@@ -147,15 +136,13 @@ final getUserListOfArticlesFutureProvider = FutureProvider((ref) async {
     throw Exception('Faild to get articles $e');
   }
 });
-final _getLastTenCategoriesFutureProvider =
-    Provider<Future<List<DawaCategory>>>((ref) async {
+final _getLastTenCategoriesFutureProvider = Provider<Future<List<DawaCategory>>>((ref) async {
   try {
     final language = ref.watch(appSettingsProvider).selectedLanguage;
 
     final articleQuery = FirebaseCollections.categories
         .withConverter<DawaCategory>(
-          fromFirestore: (snapshot, _) =>
-              DawaCategory.fromJson(snapshot.data()!),
+          fromFirestore: (snapshot, _) => DawaCategory.fromJson(snapshot.data()!),
           toFirestore: (category, _) => category.toJson(),
         )
         .where(
@@ -180,8 +167,35 @@ final _getLastTenCategoriesFutureProvider =
   }
 });
 
-final _getBannersFutureProvider =
-    Provider<Future<List<AppBanner>>>((ref) async {
+final getListOfCategoriesByIdsFutureProvider = FutureProvider.family((ref, Set<String> list) async {
+  try {
+    final language = ref.watch(appSettingsProvider).selectedLanguage;
+
+    final categoryQuery = FirebaseCollections.categories
+        .withConverter<DawaCategory>(
+          fromFirestore: (snapshot, _) => DawaCategory.fromJson(snapshot.data()!),
+          toFirestore: (category, _) => category.toJson(),
+        )
+        .where(
+          FieldPath.documentId,
+          whereIn: list,
+        )
+        .where(
+          'isArchived',
+          isEqualTo: false,
+        )
+        .where(
+          'language',
+          isEqualTo: language!.toJson(),
+        );
+
+    final categories = await categoryQuery.get();
+    return categories.docs.map((e) => e.data()).toList();
+  } catch (e) {
+    throw Exception('Faild to get categories $e');
+  }
+});
+final _getBannersFutureProvider = Provider<Future<List<AppBanner>>>((ref) async {
   try {
     final bannersQuery = FirebaseCollections.banners.withConverter<AppBanner>(
       fromFirestore: (snapshot, _) => AppBanner.fromJson(snapshot.data()!),
@@ -189,14 +203,12 @@ final _getBannersFutureProvider =
     );
     final banners = await bannersQuery.get();
     return banners.docs.map((e) => e.data()).toList();
-  } catch (e, st) {
-    log("$e", stackTrace: st, name: "_getBannersFutureProvider");
+  } catch (e) {
     throw Exception('Failed to get banners: $e');
   }
 });
 
-final homeStateProvider =
-    StateNotifierProvider<HomeStateController, AsyncValue<HomeState>>((ref) {
+final homeStateProvider = StateNotifierProvider<HomeStateController, AsyncValue<HomeState>>((ref) {
   return HomeStateController(ref: ref);
 });
 
@@ -229,7 +241,6 @@ class HomeStateController extends StateNotifier<AsyncValue<HomeState>> {
           ),
         );
       } catch (e) {
-        log(e.toString());
         rethrow;
       }
     });

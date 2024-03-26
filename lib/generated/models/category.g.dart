@@ -13,8 +13,10 @@ _$DawaCategoryImpl _$$DawaCategoryImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => e as String)
               .toSet() ??
           const {},
-      articles:
-          (json['articles'] as List<dynamic>?)?.map((e) => e as String).toSet(),
+      articles: (json['articles'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toSet() ??
+          const {},
       parentId: json['parentId'] as String?,
       language:
           ContentLanguage.fromJson(json['language'] as Map<String, dynamic>),
@@ -33,7 +35,7 @@ Map<String, dynamic> _$$DawaCategoryImplToJson(_$DawaCategoryImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'subCategories': instance.subCategories.toList(),
-      'articles': instance.articles?.toList(),
+      'articles': instance.articles.toList(),
       'parentId': instance.parentId,
       'language': instance.language.toJson(),
       'title': instance.title,

@@ -47,7 +47,8 @@ class CategoryWidget extends StatelessWidget {
                     ),
                     child: CustomPaint(
                       painter: CurvedPainter(
-                        isHaveSubCategory: category.subCategories.isNotEmpty,
+                        isHaveSubCategory:
+                            category.subCategories.isNotEmpty || category.articles.isNotEmpty,
                       ),
                       child: Center(
                         child: Padding(

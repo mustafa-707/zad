@@ -1,7 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zad_app/models/app_banner.dart';
 

@@ -10,5 +10,7 @@ final contentLanguagesProvider =
     toFirestore: (lang, _) => lang.toJson(),
   );
 
-  return await languages.get().then((value) => value.docs);
+  return await languages.get().then(
+        (value) => value.docs,
+      );
 });

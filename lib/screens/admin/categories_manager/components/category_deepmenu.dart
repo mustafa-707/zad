@@ -165,7 +165,7 @@ class _CategoryDeepMenuState extends ConsumerState<CategoryDeepMenu> {
                             onProcess = Future.microtask(
                               () async {
                                 if (mounted) Navigator.pop(context);
-                                if (widget.data.articles?.isNotEmpty ?? false) {
+                                if (widget.data.articles.isNotEmpty) {
                                   warningDialog(
                                     context,
                                     title: translate.cannotCreateSubCategory,

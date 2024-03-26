@@ -12,7 +12,7 @@ class DawaCategory with _$DawaCategory {
   const factory DawaCategory({
     required String id,
     @Default({}) Set<String> subCategories,
-    Set<String>? articles,
+    @Default({}) Set<String> articles,
     String? parentId,
     required ContentLanguage language,
     required String title,

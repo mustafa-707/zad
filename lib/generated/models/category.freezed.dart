@@ -22,7 +22,7 @@ DawaCategory _$DawaCategoryFromJson(Map<String, dynamic> json) {
 mixin _$DawaCategory {
   String get id => throw _privateConstructorUsedError;
   Set<String> get subCategories => throw _privateConstructorUsedError;
-  Set<String>? get articles => throw _privateConstructorUsedError;
+  Set<String> get articles => throw _privateConstructorUsedError;
   String? get parentId => throw _privateConstructorUsedError;
   ContentLanguage get language => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
@@ -53,7 +53,7 @@ abstract class $DawaCategoryCopyWith<$Res> {
   $Res call(
       {String id,
       Set<String> subCategories,
-      Set<String>? articles,
+      Set<String> articles,
       String? parentId,
       ContentLanguage language,
       String title,
@@ -84,7 +84,7 @@ class _$DawaCategoryCopyWithImpl<$Res, $Val extends DawaCategory>
   $Res call({
     Object? id = null,
     Object? subCategories = null,
-    Object? articles = freezed,
+    Object? articles = null,
     Object? parentId = freezed,
     Object? language = null,
     Object? title = null,
@@ -106,10 +106,10 @@ class _$DawaCategoryCopyWithImpl<$Res, $Val extends DawaCategory>
           ? _value.subCategories
           : subCategories // ignore: cast_nullable_to_non_nullable
               as Set<String>,
-      articles: freezed == articles
+      articles: null == articles
           ? _value.articles
           : articles // ignore: cast_nullable_to_non_nullable
-              as Set<String>?,
+              as Set<String>,
       parentId: freezed == parentId
           ? _value.parentId
           : parentId // ignore: cast_nullable_to_non_nullable
@@ -177,7 +177,7 @@ abstract class _$$DawaCategoryImplCopyWith<$Res>
   $Res call(
       {String id,
       Set<String> subCategories,
-      Set<String>? articles,
+      Set<String> articles,
       String? parentId,
       ContentLanguage language,
       String title,
@@ -207,7 +207,7 @@ class __$$DawaCategoryImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? subCategories = null,
-    Object? articles = freezed,
+    Object? articles = null,
     Object? parentId = freezed,
     Object? language = null,
     Object? title = null,
@@ -229,10 +229,10 @@ class __$$DawaCategoryImplCopyWithImpl<$Res>
           ? _value._subCategories
           : subCategories // ignore: cast_nullable_to_non_nullable
               as Set<String>,
-      articles: freezed == articles
+      articles: null == articles
           ? _value._articles
           : articles // ignore: cast_nullable_to_non_nullable
-              as Set<String>?,
+              as Set<String>,
       parentId: freezed == parentId
           ? _value.parentId
           : parentId // ignore: cast_nullable_to_non_nullable
@@ -288,7 +288,7 @@ class _$DawaCategoryImpl implements _DawaCategory {
   const _$DawaCategoryImpl(
       {required this.id,
       final Set<String> subCategories = const {},
-      final Set<String>? articles,
+      final Set<String> articles = const {},
       this.parentId,
       required this.language,
       required this.title,
@@ -317,14 +317,13 @@ class _$DawaCategoryImpl implements _DawaCategory {
     return EqualUnmodifiableSetView(_subCategories);
   }
 
-  final Set<String>? _articles;
+  final Set<String> _articles;
   @override
-  Set<String>? get articles {
-    final value = _articles;
-    if (value == null) return null;
+  @JsonKey()
+  Set<String> get articles {
     if (_articles is EqualUnmodifiableSetView) return _articles;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableSetView(value);
+    return EqualUnmodifiableSetView(_articles);
   }
 
   @override
@@ -427,7 +426,7 @@ abstract class _DawaCategory implements DawaCategory {
   const factory _DawaCategory(
       {required final String id,
       final Set<String> subCategories,
-      final Set<String>? articles,
+      final Set<String> articles,
       final String? parentId,
       required final ContentLanguage language,
       required final String title,
@@ -448,7 +447,7 @@ abstract class _DawaCategory implements DawaCategory {
   @override
   Set<String> get subCategories;
   @override
-  Set<String>? get articles;
+  Set<String> get articles;
   @override
   String? get parentId;
   @override

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';
@@ -88,7 +89,11 @@ class AppSettingsController extends StateNotifier<AppSettings> {
       PrefKeys.userContentLanguage,
       jsonEncode(language.toJson()),
     );
-    final userProfile = state.user!.info!.copyWith(language: language);
+    final userProfile = state.user?.info?.copyWith(language: language);
+    if (userProfile == null) {
+      log('User is null');
+      return;
+    }
     if (FirebaseAuth.instance.currentUser != null) {
       return _updateLoginUser(userProfile);
     } else {
@@ -167,7 +172,11 @@ class AppSettingsController extends StateNotifier<AppSettings> {
 
   Future<void> _saveOfflineUserProfile(UserProfile userProfile) {
     return sharedPreferences.setString(
-        PrefKeys.offlineUserProfile, jsonEncode(userProfile.toJson()));
+      PrefKeys.offlineUserProfile,
+      jsonEncode(
+        userProfile.toJson(),
+      ),
+    );
   }
 
   Future<void> _updateOfflineUser(UserProfile userProfile) async {
@@ -175,6 +184,7 @@ class AppSettingsController extends StateNotifier<AppSettings> {
       user: UserData(info: userProfile),
       selectedLanguage: userProfile.language,
     );
+
     return _saveOfflineUserProfile(userProfile);
   }
 
@@ -190,6 +200,7 @@ class AppSettingsController extends StateNotifier<AppSettings> {
       final user = state.user?.copyWith(info: userProfile);
       state = state.copyWith(
         user: user,
+        selectedLanguage: userProfile.language,
       );
       await Future.wait([
         FirebaseAuth.instance.currentUser!.updateDisplayName(userProfile.name),

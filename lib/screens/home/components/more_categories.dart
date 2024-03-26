@@ -39,7 +39,7 @@ class RootCategoriesList extends ConsumerWidget {
                               MaterialPageRoute(
                                 builder: (context) => ArticleList(
                                   title: categories[index].title,
-                                  ids: categories[index].articles ?? {},
+                                  ids: categories[index].articles,
                                 ),
                               ),
                             );
