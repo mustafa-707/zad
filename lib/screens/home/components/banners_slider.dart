@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zad_app/models/app_banner.dart';
 
@@ -12,38 +14,51 @@ class BannersSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: CarouselSlider(
           items: banners.map((banner) {
             return Builder(
               builder: (BuildContext context) {
-                return Material(
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(12),
-                  ),
-                  child: InkWell(
-                    onTap: banner.url.isEmpty
-                        ? null
-                        : () {
-                            _launchUrl(banner.url);
-                          },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(12),
-                        ),
-                        image: DecorationImage(
-                          image: NetworkImage(
-                            banner.url,
-                            scale: 1.4,
+                return Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(12),
                           ),
-                          fit: BoxFit.fill,
+                          image: DecorationImage(
+                            image: NetworkImage(
+                              banner.url,
+                              scale: 1.4,
+                            ),
+                            fit: BoxFit.fill,
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                    Positioned.fill(
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          customBorder: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          splashColor: theme.colorScheme.primary.withOpacity(.2),
+                          highlightColor: theme.colorScheme.primary.withOpacity(.1),
+                          onTap: banner.url.isEmpty
+                              ? null
+                              : () {
+                                  _launchUrl(banner.url);
+                                },
+                        ),
+                      ),
+                    ),
+                  ],
                 );
               },
             );
