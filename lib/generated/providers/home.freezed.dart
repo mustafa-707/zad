@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$HomeState {
   List<DawaArticle> get articles => throw _privateConstructorUsedError;
   List<DawaCategory> get categories => throw _privateConstructorUsedError;
+  List<AppBanner> get banners => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeStateCopyWith<HomeState> get copyWith =>
@@ -29,7 +30,10 @@ abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
-  $Res call({List<DawaArticle> articles, List<DawaCategory> categories});
+  $Res call(
+      {List<DawaArticle> articles,
+      List<DawaCategory> categories,
+      List<AppBanner> banners});
 }
 
 /// @nodoc
@@ -47,6 +51,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   $Res call({
     Object? articles = null,
     Object? categories = null,
+    Object? banners = null,
   }) {
     return _then(_value.copyWith(
       articles: null == articles
@@ -57,6 +62,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.categories
           : categories // ignore: cast_nullable_to_non_nullable
               as List<DawaCategory>,
+      banners: null == banners
+          ? _value.banners
+          : banners // ignore: cast_nullable_to_non_nullable
+              as List<AppBanner>,
     ) as $Val);
   }
 }
@@ -69,7 +78,10 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       __$$HomeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<DawaArticle> articles, List<DawaCategory> categories});
+  $Res call(
+      {List<DawaArticle> articles,
+      List<DawaCategory> categories,
+      List<AppBanner> banners});
 }
 
 /// @nodoc
@@ -85,6 +97,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
   $Res call({
     Object? articles = null,
     Object? categories = null,
+    Object? banners = null,
   }) {
     return _then(_$HomeStateImpl(
       articles: null == articles
@@ -95,6 +108,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value._categories
           : categories // ignore: cast_nullable_to_non_nullable
               as List<DawaCategory>,
+      banners: null == banners
+          ? _value._banners
+          : banners // ignore: cast_nullable_to_non_nullable
+              as List<AppBanner>,
     ));
   }
 }
@@ -104,9 +121,11 @@ class __$$HomeStateImplCopyWithImpl<$Res>
 class _$HomeStateImpl implements _HomeState {
   const _$HomeStateImpl(
       {final List<DawaArticle> articles = const <DawaArticle>[],
-      final List<DawaCategory> categories = const <DawaCategory>[]})
+      final List<DawaCategory> categories = const <DawaCategory>[],
+      final List<AppBanner> banners = const <AppBanner>[]})
       : _articles = articles,
-        _categories = categories;
+        _categories = categories,
+        _banners = banners;
 
   final List<DawaArticle> _articles;
   @override
@@ -126,9 +145,18 @@ class _$HomeStateImpl implements _HomeState {
     return EqualUnmodifiableListView(_categories);
   }
 
+  final List<AppBanner> _banners;
+  @override
+  @JsonKey()
+  List<AppBanner> get banners {
+    if (_banners is EqualUnmodifiableListView) return _banners;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_banners);
+  }
+
   @override
   String toString() {
-    return 'HomeState(articles: $articles, categories: $categories)';
+    return 'HomeState(articles: $articles, categories: $categories, banners: $banners)';
   }
 
   @override
@@ -138,14 +166,16 @@ class _$HomeStateImpl implements _HomeState {
             other is _$HomeStateImpl &&
             const DeepCollectionEquality().equals(other._articles, _articles) &&
             const DeepCollectionEquality()
-                .equals(other._categories, _categories));
+                .equals(other._categories, _categories) &&
+            const DeepCollectionEquality().equals(other._banners, _banners));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_articles),
-      const DeepCollectionEquality().hash(_categories));
+      const DeepCollectionEquality().hash(_categories),
+      const DeepCollectionEquality().hash(_banners));
 
   @JsonKey(ignore: true)
   @override
@@ -157,12 +187,15 @@ class _$HomeStateImpl implements _HomeState {
 abstract class _HomeState implements HomeState {
   const factory _HomeState(
       {final List<DawaArticle> articles,
-      final List<DawaCategory> categories}) = _$HomeStateImpl;
+      final List<DawaCategory> categories,
+      final List<AppBanner> banners}) = _$HomeStateImpl;
 
   @override
   List<DawaArticle> get articles;
   @override
   List<DawaCategory> get categories;
+  @override
+  List<AppBanner> get banners;
   @override
   @JsonKey(ignore: true)
   _$$HomeStateImplCopyWith<_$HomeStateImpl> get copyWith =>
